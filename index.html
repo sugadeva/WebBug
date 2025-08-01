@@ -32,7 +32,7 @@
       margin-bottom: 1.5rem;
     }
 
-    input, textarea, button {
+    input, textarea, select, button {
       width: 100%;
       padding: 0.75rem;
       margin-bottom: 1rem;
@@ -41,7 +41,7 @@
       font-size: 1rem;
     }
 
-    input, textarea {
+    input, textarea, select {
       background: rgba(255, 255, 255, 0.2);
       color: #fff;
     }
@@ -66,6 +66,14 @@
       <input type="text" id="nama" placeholder="Nama Pembeli" required />
       <input type="number" id="nominal" placeholder="Nominal (Rp)" required />
       <textarea id="deskripsi" placeholder="Deskripsi Produk" required></textarea>
+      <select id="metode" required>
+        <option value="">-- Pilih Metode Pembayaran --</option>
+        <option value="qris">QRIS</option>
+        <option value="ovo">OVO</option>
+        <option value="gopay">GoPay</option>
+        <option value="dana">DANA</option>
+        <option value="transfer">Transfer Bank</option>
+      </select>
       <button type="submit">Bayar Sekarang</button>
     </form>
   </div>
@@ -81,16 +89,31 @@
       const nama = document.getElementById('nama').value;
       const nominal = parseInt(document.getElementById('nominal').value);
       const deskripsi = document.getElementById('deskripsi').value;
+      const metode = document.getElementById('metode').value;
+
+      if (!metode) {
+        alert('Silakan pilih metode pembayaran.');
+        return;
+      }
+
       const kodeUnik = generateKodeUnik();
       const total = nominal + kodeUnik;
 
       const hasil = `
         <h2>Tagihan untuk ${nama}</h2>
         <p>Produk: ${deskripsi}</p>
+        <p>Metode: <strong>${metode.toUpperCase()}</strong></p>
         <p>Nominal: Rp ${nominal.toLocaleString()}</p>
         <p>Kode Unik: <strong>${kodeUnik}</strong></p>
         <p><strong>Total Bayar: Rp ${total.toLocaleString()}</strong></p>
         <button onclick="window.location.reload()">Kembali</button>
+      `;
+
+      document.querySelector('.container').innerHTML = hasil;
+    }
+  </script>
+</body>
+</html>
       `;
 
       document.querySelector('.container').innerHTML = hasil;
