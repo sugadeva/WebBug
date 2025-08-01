@@ -3,78 +3,98 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bug Button</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <title>Web Payment</title>
   <style>
-    * {
+    body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #0f5132, #198754);
-      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #198754, #0f5132);
+      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #fff;
+      height: 100vh;
     }
 
     .container {
-      text-align: center;
-      background: rgba(0, 0, 0, 0.25);
-      padding: 3rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      max-width: 400px;
+      width: 100%;
     }
 
     h1 {
-      margin-bottom: 1rem;
-      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
     }
 
-    .bug-button {
-      background-color: #00c851;
+    input, textarea, button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
       border: none;
-      padding: 1rem 2rem;
-      font-size: 1.2rem;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0, 200, 81, 0.5);
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    input, textarea {
+      background: rgba(255, 255, 255, 0.2);
       color: #fff;
     }
 
-    .bug-button:hover {
-      background-color: #007e33;
-      transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(0, 200, 81, 0.7);
+    button {
+      background-color: #00c851;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
     }
 
-    .result {
-      margin-top: 2rem;
-      font-size: 1rem;
-      color: #caffd8;
+    button:hover {
+      background-color: #007e33;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Laporkan Bug</h1>
-    <button class="bug-button" onclick="laporBug()">Kirim Bug</button>
-    <div class="result" id="result"></div>
+    <h1>Form Pembayaran</h1>
+    <form onsubmit="handleSubmit(event)">
+      <input type="text" id="nama" placeholder="Nama Pembeli" required />
+      <input type="number" id="nominal" placeholder="Nominal (Rp)" required />
+      <textarea id="deskripsi" placeholder="Deskripsi Produk" required></textarea>
+      <button type="submit">Bayar Sekarang</button>
+    </form>
   </div>
 
   <script>
-    function laporBug() {
-      document.getElementById('result').innerText = 'Bug berhasil dikirim! (simulasi)';
+    function generateKodeUnik() {
+      return Math.floor(100 + Math.random() * 900); // 3 digit kode unik
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+
+      const nama = document.getElementById('nama').value;
+      const nominal = parseInt(document.getElementById('nominal').value);
+      const deskripsi = document.getElementById('deskripsi').value;
+      const kodeUnik = generateKodeUnik();
+      const total = nominal + kodeUnik;
+
+      const hasil = `
+        <h2>Tagihan untuk ${nama}</h2>
+        <p>Produk: ${deskripsi}</p>
+        <p>Nominal: Rp ${nominal.toLocaleString()}</p>
+        <p>Kode Unik: <strong>${kodeUnik}</strong></p>
+        <p><strong>Total Bayar: Rp ${total.toLocaleString()}</strong></p>
+        <button onclick="window.location.reload()">Kembali</button>
+      `;
+
+      document.querySelector('.container').innerHTML = hasil;
     }
   </script>
 </body>
-  </html>
-  
+</html>
